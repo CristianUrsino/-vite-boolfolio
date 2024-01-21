@@ -5,6 +5,8 @@
       {{project.name}}
     </li>
   </ul>
+  <button class="btn" :class="{ 'disabled': !nextButtonStatus }" @click="nextPage" :disabled="!nextButtonStatus">avanti</button>
+  <button class="btn" :class="{ 'disabled': !prevButtonStatus }" @click="previousPage" :disabled="!prevButtonStatus">indietro</button>
 </template>
 
 <script>
@@ -16,6 +18,10 @@ export default{
     return{
       store,
       projects:[],
+      currentPage: 1,
+      prevButtonStatus:false,
+      nextButtonStatus:true,
+      lastPage: 0,
     };
   },
   methods: {
@@ -23,8 +29,31 @@ export default{
       axios.get(store.apiUrl + "/project", {params: {page: this.currentPage}}).then((res) => {
         this.projects = res.data.results.data;
         console.log(this.projects);
+        this.currentPage = res.data.results.current_page;
+        this.lastPage = res.data.results.last_page;
+        if(this.lastPage === 1){
+          this.nextButtonStatus = false;
+        }
       });
     },
+    nextPage(){
+      console.log('next');
+      this.prevButtonStatus = true;
+      this.currentPage = this.currentPage +1;
+      this.getAllProjects();
+      if (this.currentPage === this.lastPage) {
+        this.nextButtonStatus = false;
+      }
+    },
+    previousPage(){
+      console.log('prev');
+      this.nextButtonStatus = true;
+      this.currentPage = this.currentPage -1;
+      this.getAllProjects();
+      if (this.currentPage === 1) {
+        this.prevButtonStatus = false;
+      }
+    }
   },
   mounted(){
     this.getAllProjects();
