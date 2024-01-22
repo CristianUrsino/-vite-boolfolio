@@ -4,8 +4,8 @@
     <h1>PROGETTO</h1>
     <ul>
       <li v-for="project in projects" :key="project.id">
-        <router-link :to="{ name: 'project-detail', params: { id: project.id } }" class="btn btn-success">
-          {{ project.name }}
+        <router-link :to="{ name: 'project-detail', params: { id: project.id } }" >
+          <ProjectCard :projectName="project.name" />
         </router-link>
       </li>
     </ul>
@@ -17,62 +17,62 @@
     </button>
   </div>
 </template>
-  
-  <script>
-  import { RouterLink } from 'vue-router';
-  import {store} from "../store";
-  import axios from "axios";
-  export default{
-    name: 'App',
-    data(){
-      return{
-        store,
-        projects:[],
-        currentPage: 1,
-        prevButtonStatus:false,
-        nextButtonStatus:true,
-        lastPage: 0,
-      };
-    },
-    components: {
-      RouterLink,
-    },
-    methods: {
-      getAllProjects(){
-        axios.get(store.apiUrl + "/project", {params: {page: this.currentPage}}).then((res) => {
-          this.projects = res.data.results.data;
-          // console.log(this.projects);
-          this.currentPage = res.data.results.current_page;
-          this.lastPage = res.data.results.last_page;
-          if(this.lastPage === 1){
-            this.nextButtonStatus = false;
-          }
-        });
-      },
-      nextPage(){
-        console.log('next');
-        this.prevButtonStatus = true;
-        this.currentPage = this.currentPage +1;
-        this.getAllProjects();
-        if (this.currentPage === this.lastPage) {
+
+<script>
+import { RouterLink } from 'vue-router';
+import ProjectCard from '../components/ProjectCard.vue';
+import { store } from "../store";
+import axios from "axios";
+
+export default {
+  name: 'App',
+  data() {
+    return {
+      store,
+      projects: [],
+      currentPage: 1,
+      prevButtonStatus: false,
+      nextButtonStatus: true,
+      lastPage: 0,
+    };
+  },
+  components: {
+    RouterLink,
+    ProjectCard,
+  },
+  methods: {
+    getAllProjects() {
+      axios.get(store.apiUrl + "/project", { params: { page: this.currentPage } }).then((res) => {
+        this.projects = res.data.results.data;
+        this.currentPage = res.data.results.current_page;
+        this.lastPage = res.data.results.last_page;
+        if (this.lastPage === 1) {
           this.nextButtonStatus = false;
         }
-      },
-      previousPage(){
-        console.log('prev');
-        this.nextButtonStatus = true;
-        this.currentPage = this.currentPage -1;
-        this.getAllProjects();
-        if (this.currentPage === 1) {
-          this.prevButtonStatus = false;
-        }
+      });
+    },
+    nextPage() {
+      this.prevButtonStatus = true;
+      this.currentPage = this.currentPage + 1;
+      this.getAllProjects();
+      if (this.currentPage === this.lastPage) {
+        this.nextButtonStatus = false;
       }
     },
-    mounted(){
+    previousPage() {
+      this.nextButtonStatus = true;
+      this.currentPage = this.currentPage - 1;
       this.getAllProjects();
+      if (this.currentPage === 1) {
+        this.prevButtonStatus = false;
+      }
     }
+  },
+  mounted() {
+    this.getAllProjects();
   }
-  </script>
+};
+</script>
   
   <style lang="scss" scoped>
   //RICORDARE ASSETS
