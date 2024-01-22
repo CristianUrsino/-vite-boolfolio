@@ -1,5 +1,11 @@
 <template>
-    <div class="my-5">header</div>
+    <ul class="my-5 d-flex">
+        <li v-for="tab in store.headerLinks" :key="tab.id" class="me-5">
+            <router-link :to=" tab.link">
+                {{ tab.name }}
+            </router-link>  
+        </li>
+    </ul>
 </template>
 
 <script>
@@ -15,5 +21,7 @@ export default{
 </script>
 
 <style lang="scss" scoped>
-    
+    li{
+        list-style-type: none;
+    }
 </style>
