@@ -1,10 +1,12 @@
 <template>
   <div>
     <router-view></router-view>
-    <h1>PROGETTI:</h1>
+    <h1>PROGETTO</h1>
     <ul>
       <li v-for="project in projects" :key="project.id">
-        {{ project.name }}
+        <router-link :to="{ name: 'project-detail', params: { id: project.id } }" class="btn btn-success">
+          {{ project.name }}
+        </router-link>
       </li>
     </ul>
     <button class="btn" :class="{ 'disabled': !nextButtonStatus }" @click="nextPage" :disabled="!nextButtonStatus">
@@ -17,6 +19,7 @@
 </template>
   
   <script>
+  import { RouterLink } from 'vue-router';
   import {store} from "../store";
   import axios from "axios";
   export default{
@@ -30,6 +33,9 @@
         nextButtonStatus:true,
         lastPage: 0,
       };
+    },
+    components: {
+      RouterLink,
     },
     methods: {
       getAllProjects(){
