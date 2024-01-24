@@ -12,5 +12,9 @@ export const store = reactive({
             name:'projects',
             link:'/projects'
         },
+        {
+            name:'contacts',
+            link:'/contacts'
+        },
     ]
 })
