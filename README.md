@@ -1,6 +1,8 @@
 #  vue-api-frontend
 
-This template should help get you started developing with Vue 3 in Vite.
+* Aggiungiamo al nostro progetto Laravel una nuovo Api/ProjectController. Questo controller risponderà a delle richieste via API e si occuperà di restituire la lista dei progetti presenti nel database in formato json.
+* Testiamo la chiamata API tramite browser e assicuriamoci di ricevere i dati correttamente.
+* Progettiamo il nostro front-office (aiutandoci con figma) per farci un'idea di quali end-point API avremo bisogno
 
 ## Recommended IDE Setup
 
